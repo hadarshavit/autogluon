@@ -226,8 +226,6 @@ class TabularPredictor:
             logger.log(15, f"{AUTO_WEIGHT} currently does not use any sample weights.")
         self.sample_weight = sample_weight
         self.weight_evaluation = weight_evaluation  # TODO: sample_weight and weight_evaluation can both be properties that link to self._learner.sample_weight, self._learner.weight_evaluation
-        self._decision_threshold = None  # TODO: Each model should have its own decision threshold instead of one global threshold
-        self.random_state = random_state
         if self.sample_weight in [AUTO_WEIGHT, BALANCE_WEIGHT] and self.weight_evaluation:
             logger.warning(
                 f"We do not recommend specifying weight_evaluation when sample_weight='{self.sample_weight}', instead specify appropriate eval_metric.")
