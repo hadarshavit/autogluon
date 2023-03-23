@@ -444,7 +444,7 @@ class CustomHpoExecutor(HpoExecutor):
         self.scheduler_options[1]['time_out'] = value
         self._time_limit = value
     
-    def initialize(self, hyperparameter_tune_kwargs, default_num_trials=None, time_limit=None):
+    def initialize(self, hyperparameter_tune_kwargs, default_num_trials=None, time_limit=None, random_seed=None):
         if not isinstance(hyperparameter_tune_kwargs, tuple):
             if isinstance(hyperparameter_tune_kwargs, dict):
                 hyperparameter_tune_kwargs = copy.deepcopy(hyperparameter_tune_kwargs)
@@ -457,6 +457,8 @@ class CustomHpoExecutor(HpoExecutor):
             if 'time_out' not in hyperparameter_tune_kwargs[1]:
                 hyperparameter_tune_kwargs[1]['time_out'] = time_limit
             time_limit = hyperparameter_tune_kwargs[1]['time_out']
+            if 'random_seed' not in hyperparameter_tune_kwargs[1]:
+                hyperparameter_tune_kwargs[1]['random_seed'] = random_seed
         self.scheduler_options = hyperparameter_tune_kwargs
         self.time_limit = time_limit
         if self.hyperparameter_tune_kwargs is None:

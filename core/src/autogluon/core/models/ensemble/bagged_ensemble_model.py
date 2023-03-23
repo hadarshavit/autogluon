@@ -51,7 +51,7 @@ class BaggedEnsembleModel(AbstractModel):
     """
     _oof_filename = 'oof.pkl'
 
-    def __init__(self, model_base: Union[AbstractModel, Type[AbstractModel]], model_base_kwargs: Dict[str, any] = None, random_state: int = 0, **kwargs):
+    def __init__(self, model_base: Union[AbstractModel, Type[AbstractModel]], model_base_kwargs: Dict[str, any] = None, **kwargs):
         if inspect.isclass(model_base):
             if model_base_kwargs is None:
                 model_base_kwargs = dict()
@@ -70,7 +70,6 @@ class BaggedEnsembleModel(AbstractModel):
         self._k_fold_end = 0  # Number of models fit in current n_repeat (0 if completed), if kfold=5 and 8 models have been fit, _k_fold_end is 3
         self._k = None  # k models per n_repeat, equivalent to kfold value
         self._k_per_n_repeat = []  # k-fold used for each n_repeat. == [5, 10, 3] if first kfold was 5, second was 10, and third was 3
-        self._random_state = random_state
         self.low_memory = True
         self._bagged_mode = None
         # _child_oof currently is only set to True for KNN models, that are capable of LOO prediction generation to avoid needing bagging.

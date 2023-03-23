@@ -131,6 +131,7 @@ class XGBoostModel(AbstractModel):
             callbacks.append(EarlyStoppingCustom(early_stopping_rounds, start_time=start_time, time_limit=time_limit, verbose=verbose))
             params['callbacks'] = callbacks
 
+        params['random_state'] = self._random_state
         from xgboost import XGBClassifier, XGBRegressor
         model_type = XGBClassifier if self.problem_type in PROBLEM_TYPES_CLASSIFICATION else XGBRegressor
         self.model = model_type(**params)
@@ -139,7 +140,7 @@ class XGBoostModel(AbstractModel):
             y=y,
             eval_set=eval_set,
             verbose=False,
-            sample_weight=sample_weight
+            sample_weight=sample_weight,
         )
 
         bst = self.model.get_booster()

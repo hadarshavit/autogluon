@@ -36,7 +36,7 @@ class CatBoostModel(AbstractModel):
         default_params = get_param_baseline(problem_type=self.problem_type)
         for param, val in default_params.items():
             self._set_default_param_value(param, val)
-        self._set_default_param_value('random_seed', 0)  # Remove randomness for reproducibility
+        self._set_default_param_value('random_seed', self._random_state)  # Remove randomness for reproducibility HADAR seed
         # Set 'allow_writing_files' to True in order to keep log files created by catboost during training (these will be saved in the directory where AutoGluon stores this model)
         self._set_default_param_value('allow_writing_files', False)  # Disables creation of catboost logging files during training by default
         if self.problem_type != SOFTCLASS:  # TODO: remove this after catboost 0.24

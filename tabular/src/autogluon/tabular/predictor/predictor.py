@@ -203,6 +203,7 @@ class TabularPredictor:
             sample_weight=None,
             weight_evaluation=False,
             groups=None,
+            random_state=0,
             **kwargs
     ):
         self.verbosity = verbosity
@@ -212,6 +213,7 @@ class TabularPredictor:
             logger.log(15, f"{AUTO_WEIGHT} currently does not use any sample weights.")
         self.sample_weight = sample_weight
         self.weight_evaluation = weight_evaluation  # TODO: sample_weight and weight_evaluation can both be properties that link to self._learner.sample_weight, self._learner.weight_evaluation
+        self.random_state = random_state
         if self.sample_weight in [AUTO_WEIGHT, BALANCE_WEIGHT] and self.weight_evaluation:
             logger.warning(
                 f"We do not recommend specifying weight_evaluation when sample_weight='{self.sample_weight}', instead specify appropriate eval_metric.")
@@ -221,6 +223,9 @@ class TabularPredictor:
         learner_type = kwargs.pop('learner_type', DefaultLearner)
         learner_kwargs = kwargs.pop('learner_kwargs', dict())
         quantile_levels = kwargs.get('quantile_levels', None)
+
+        if 'random_state' not in learner_kwargs:
+            learner_kwargs['random_state'] = self.random_state
 
         self._learner: AbstractTabularLearner = learner_type(path_context=path, label=label, feature_generator=None,
                                                              eval_metric=eval_metric, problem_type=problem_type,
@@ -3205,6 +3210,7 @@ class TabularPredictor:
             'learner_type',
             'learner_kwargs',
             'quantile_levels',
+            'random_state'
         }
         invalid_keys = []
         for key in kwargs:

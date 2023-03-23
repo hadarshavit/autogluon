@@ -130,7 +130,7 @@ class LinearModel(AbstractModel):
         return self._pipeline.fit_transform(X)
 
     def _set_default_params(self):
-        default_params = {'random_state': 0, 'fit_intercept': True}
+        default_params = {'random_state': self._random_state, 'fit_intercept': True} # HADAR state
         if self.problem_type != REGRESSION:
             default_params.update({'solver': _get_solver(self.problem_type)})
         default_params.update(get_param_baseline())
@@ -151,7 +151,7 @@ class LinearModel(AbstractModel):
         X = self.preprocess(X, is_train=True)
         if self.problem_type == BINARY:
             y = y.astype(int).values
-
+         
         params = {k: v for k, v in self.params.items() if k not in preprocess_params_set}
         if 'n_jobs' not in params:
             if self.problem_type != REGRESSION:
