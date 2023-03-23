@@ -87,7 +87,7 @@ class RFModel(AbstractModel):
             #  This size scales linearly with number of rows.
             'max_leaf_nodes': 15000,
             'n_jobs': -1,
-            'random_state': 0,
+            'random_state': 0, # HADAR state
             'bootstrap': True,  # Required for OOB estimates, setting to False will raise exception if bagging.
             # TODO: min_samples_leaf=5 is too large on most problems, however on some datasets it helps a lot (airlines likes >40 min_samples_leaf, adult likes 2 much better than 1)
             #  This value would need to be tuned per dataset, likely very worthwhile.

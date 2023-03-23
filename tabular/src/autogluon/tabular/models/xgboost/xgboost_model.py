@@ -138,7 +138,7 @@ class XGBoostModel(AbstractModel):
             y=y,
             eval_set=eval_set,
             verbose=False,
-            sample_weight=sample_weight
+            sample_weight=sample_weight,
         )
 
         bst = self.model.get_booster()
