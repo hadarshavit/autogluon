@@ -88,12 +88,12 @@ class AbstractModel:
     model_info_json_name = 'info.json'
 
     def __init__(self,
-                 random_state,
                  path: str = None,
                  name: str = None,
                  problem_type: str = None,
                  eval_metric: Union[str, metrics.Scorer] = None,
-                 hyperparameters=None
+                 hyperparameters=None,
+                 random_state=0
                  ):
 
         if name is None:

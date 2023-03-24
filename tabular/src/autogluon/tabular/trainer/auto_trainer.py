@@ -22,6 +22,7 @@ class AutoTrainer(AbstractTrainer):
         invalid_model_names = kwargs.pop('invalid_model_names', self._get_banned_model_names())
         silent = kwargs.pop('silent', self.verbosity < 3)
         ag_args_fit = kwargs.pop('ag_args_fit', None)
+        random_state = kwargs.pop('random_state', self.random_state)
         if quantile_levels is not None:
             if ag_args_fit is None:
                 ag_args_fit = dict()
@@ -34,7 +35,7 @@ class AutoTrainer(AbstractTrainer):
                                  hyperparameters=hyperparameters,
                                  ag_args_fit=ag_args_fit,
                                  invalid_model_names=invalid_model_names,
-                                 silent=silent, **kwargs)
+                                 silent=silent, random_state=random_state, **kwargs)
 
     def fit(self,
             X,
