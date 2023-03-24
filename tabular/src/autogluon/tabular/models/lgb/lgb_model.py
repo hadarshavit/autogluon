@@ -165,7 +165,7 @@ class LGBModel(AbstractModel):
         if log_period is not None:
             callbacks.append(log_evaluation(period=log_period))
 
-        seed_val = params.pop('seed_value', 0) # HADAR seed
+        seed_val = self._random_state # HADAR seed
         train_params = {
             'params': params,
             'train_set': dataset_train,

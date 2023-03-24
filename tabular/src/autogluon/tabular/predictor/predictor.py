@@ -889,22 +889,6 @@ class TabularPredictor:
         if isinstance(hyperparameters, str):
             hyperparameters = get_hyperparameter_config(hyperparameters)
 
-        if 'random_seed' not in hyperparameters['CAT']:
-            hyperparameters['CAT']['random_seed'] = self.random_state
-        if 'seed_val' not in hyperparameters['GBM']:
-            hyperparameters['GBM']['seed_val'] = self.random_state
-        if 'random_state' not in hyperparameters['XGB']:
-            hyperparameters['XGB']['random_state'] = self.random_state
-        if 'RF' not in hyperparameters['RF']:
-            hyperparameters['RF']['random_state'] = self.random_state
-        if 'XT' not in hyperparameters['XT']:
-            hyperparameters['XT']['random_state'] = self.random_state
-        if 'LR' not in hyperparameters['LR']:
-            hyperparameters['LR']['random_state'] = self.random_state
-        if 'NN' not in hyperparameters['NN']:
-            hyperparameters['NN']['seed_value'] = self.random_state
-        if 'FASTAI' not in hyperparameters['FASTAI']:
-            hyperparameters['FASTAI']['seed_value'] = self.random_state
         # TODO: Hyperparam could have non-serializble objects. Save as pkl and loaded on demand
         # in case the hyperprams are large in memory
         self.fit_hyperparameters_ = hyperparameters
@@ -3592,6 +3576,7 @@ class TabularPredictor:
             'learner_type',
             'learner_kwargs',
             'quantile_levels',
+            'random_state'
         }
         invalid_keys = []
         for key in kwargs:
