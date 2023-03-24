@@ -676,7 +676,7 @@ def test_tabularHPO():
     seed_val = 99 # random seed
     subsample_size = None
     hyperparameter_tune_kwargs = {'scheduler': 'local', 'searcher': 'auto'}
-    verbosity = 2 # how much output to print
+    verbosity = 0 # how much output to print
     hyperparameters = None
     time_limit = None
     fast_benchmark = True # False

@@ -86,7 +86,7 @@ class LocalSequentialScheduler(object):
         Note: The type of resource must be int.
     """
 
-    def __init__(self, train_fn, search_space, train_fn_kwargs=None, searcher='auto', reward_attr='reward', resource=None, **kwargs):
+    def __init__(self, train_fn, search_space, train_fn_kwargs=None, searcher='auto', reward_attr='reward', resource=None, random_seed=0, **kwargs):
         self.train_fn = train_fn
         self.training_history = None
         self.config_history = None
@@ -94,6 +94,7 @@ class LocalSequentialScheduler(object):
         self.time_attr = kwargs.get('time_attr', None)
         self.resource = resource
         self.max_reward = kwargs.get('max_reward', None)
+        self.random_seed = random_seed
         self.searcher: LocalSearcher = self.get_searcher_(searcher, train_fn, search_space=search_space, **kwargs)
         self.init_limits_(kwargs)
         self.train_fn_kwargs = train_fn_kwargs
@@ -130,6 +131,8 @@ class LocalSequentialScheduler(object):
             _search_options = search_options.copy()
             _search_options['search_space'] = search_space
             _search_options['reward_attribute'] = self._reward_attr
+            _search_options['random_seed'] = self.random_seed
+            
             # Adjoin scheduler info to search_options, if not already done by
             # subclass
             if 'scheduler' not in _search_options:

@@ -62,7 +62,7 @@ def model_trial(
 def init_model(args, model_cls, init_params, backend, is_bagged_model=False):
     args = args.copy()
 
-    if backend == CUSTOM_BACKEND:
+    if backend == CUSTOM_BACKEND: 
         task_id = args.pop('task_id')
         file_prefix = f"T{task_id+1}"  # append to all file names created during this trial. Do NOT change!
     elif backend == RAY_BACKEND:

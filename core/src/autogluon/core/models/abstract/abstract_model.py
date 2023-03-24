@@ -88,11 +88,13 @@ class AbstractModel:
     model_info_json_name = 'info.json'
 
     def __init__(self,
+                 random_state,
                  path: str = None,
                  name: str = None,
                  problem_type: str = None,
                  eval_metric: Union[str, metrics.Scorer] = None,
-                 hyperparameters=None):
+                 hyperparameters=None
+                 ):
 
         if name is None:
             self.name = self.__class__.__name__
@@ -158,6 +160,8 @@ class AbstractModel:
         self._fit_metadata = dict()
 
         self._compiler = None
+
+        self._random_state = random_state
 
     def _init_params(self):
         """Initializes model hyperparameters"""
@@ -1150,6 +1154,7 @@ class AbstractModel:
         problem_type = self.problem_type
         eval_metric = self.eval_metric
         hyperparameters = self._user_params.copy()
+        random_state = self._random_state
         if self._user_params_aux:
             hyperparameters[AG_ARGS_FIT] = self._user_params_aux.copy()
 
@@ -1159,6 +1164,7 @@ class AbstractModel:
             problem_type=problem_type,
             eval_metric=eval_metric,
             hyperparameters=hyperparameters,
+            random_state=random_state
         )
 
         return args
@@ -1247,7 +1253,7 @@ class AbstractModel:
         if hpo_executor is None:
             hpo_executor = self._get_default_hpo_executor()
             default_num_trials = kwargs.pop('default_num_trials', None)
-            hpo_executor.initialize(hyperparameter_tune_kwargs, default_num_trials=default_num_trials, time_limit=time_limit)
+            hpo_executor.initialize(hyperparameter_tune_kwargs, default_num_trials=default_num_trials, time_limit=time_limit, random_seed=self._random_state)
         kwargs = self.initialize(time_limit=time_limit, **kwargs)
         self._register_fit_metadata(**kwargs)
         self._validate_fit_memory_usage(**kwargs)
@@ -1304,7 +1310,9 @@ class AbstractModel:
             fit_kwargs=fit_kwargs,
             train_path=train_path,
             val_path=val_path,
-            hpo_executor=hpo_executor,
+            hpo_executor=hpo_executor, 
+                        random_seed=self._random_state, # TODO
+
         )
         model_estimate_memory_usage = None
         if self.estimate_memory_usage is not None:

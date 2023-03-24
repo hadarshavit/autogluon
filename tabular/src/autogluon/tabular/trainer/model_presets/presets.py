@@ -161,7 +161,7 @@ VALID_AG_ARGS_KEYS = {
 def get_preset_models(path, problem_type, eval_metric, hyperparameters,
                       level: int = 1, ensemble_type=StackerEnsembleModel, ensemble_kwargs: dict = None, ag_args_fit=None, ag_args=None, ag_args_ensemble=None,
                       name_suffix: str = None, default_priorities=None, invalid_model_names: list = None, excluded_model_types: list = None,
-                      hyperparameter_preprocess_func=None, hyperparameter_preprocess_kwargs=None, silent=True):
+                      hyperparameter_preprocess_func=None, hyperparameter_preprocess_kwargs=None, silent=True, random_state=0):
     hyperparameters = process_hyperparameters(hyperparameters)
     if hyperparameter_preprocess_func is not None:
         if hyperparameter_preprocess_kwargs is None:
@@ -238,7 +238,7 @@ def get_preset_models(path, problem_type, eval_metric, hyperparameters,
     for model_cfg in model_cfg_priority_list:
         model = model_factory(model_cfg, path=path, problem_type=problem_type, eval_metric=eval_metric,
                               name_suffix=name_suffix, ensemble_type=ensemble_type, ensemble_kwargs=ensemble_kwargs,
-                              invalid_name_set=invalid_name_set, level=level)
+                              invalid_name_set=invalid_name_set, level=level, random_state=random_state)
         invalid_name_set.add(model.name)
         if 'hyperparameter_tune_kwargs' in model_cfg[AG_ARGS]:
             model_args_fit[model.name] = {'hyperparameter_tune_kwargs': model_cfg[AG_ARGS]['hyperparameter_tune_kwargs']}
@@ -318,7 +318,7 @@ def is_model_cfg_valid(model_cfg, level=1, problem_type=None):
 def model_factory(
         model, path, problem_type, eval_metric,
         name_suffix=None, ensemble_type=StackerEnsembleModel, ensemble_kwargs=None,
-        invalid_name_set=None, level=1,
+        invalid_name_set=None, level=1, random_state=0
 ):
     if invalid_name_set is None:
         invalid_name_set = set()
@@ -358,6 +358,7 @@ def model_factory(
         problem_type=problem_type,
         eval_metric=eval_metric,
         hyperparameters=model_params,
+        random_state=random_state
     )
 
     if ensemble_kwargs is not None:
