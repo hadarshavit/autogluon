@@ -256,7 +256,7 @@ class NNFastAiTabularModel(AbstractModel):
 
         # Make deterministic
         from fastai.torch_core import set_seed
-        seed_value = params.pop('seed_value', 0) # HADAR seed
+        seed_value = self._random_state
         set_seed(seed_value, True)
         dls.rng.seed(seed_value)
 
